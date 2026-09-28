@@ -8376,7 +8376,6 @@ GameObject:
   - component: {fileID: 1898470265}
   - component: {fileID: 1898470263}
   - component: {fileID: 1898470261}
-  - component: {fileID: 1898470260}
   m_Layer: 8
   m_Name: Chairs
   m_TagString: Untagged
@@ -8399,33 +8398,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 384344962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1898470260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1898470257}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b66a51b7fe64c4390ac471b7df316b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _showInfo: 1
-  _explanation: "When a collision with a bounding volume with tags [Player] starts:\n         
-    [NULL]\n"
-  description: 
-  enableTrigger: 1
-  allowRetrigger: 0
-  hasPreconditions: 0
-  preConditions: []
-  actions:
-  - delay: 0
-    action: {fileID: 0}
-  isTrigger: 0
-  eventType: 0
-  tags:
-  - {fileID: 11400000, guid: 15edcc3cfa00a4e2fba5f80bcf8774c8, type: 2}
 --- !u!251 &1898470261
 PlatformEffector2D:
   m_ObjectHideFlags: 0
