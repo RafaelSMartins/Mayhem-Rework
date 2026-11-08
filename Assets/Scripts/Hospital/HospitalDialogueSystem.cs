@@ -87,7 +87,7 @@ public class HospitalDialogueSystem : MonoBehaviour
 
     void Update()
     {
-        if (!billShown && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return)))
+        if (!billShown && GameInput.Player.Interact.WasPressedThisFrame())
         {
             HandleInput();
         }
@@ -279,13 +279,9 @@ public class HospitalDialogueSystem : MonoBehaviour
     {
         billShown = true;
 
-        int playerLife = GetPlayerLife();
-        KeepGameData data = GameObject.Find("KeepCoffeeData").GetComponent<KeepGameData>();
-        float stress = data.stress;
-        float stressFactor = 1f - (stress / 100f);
-        int lifeLost = (int)(100 * stressFactor - playerLife);
+        int lifeLost = RunManager.MaxHealth - RunManager.Instance.Health;
         int billCost = (int)(baseBillCost + (lifeLost * 1.5));
-        int playerMoney = GetPlayerMoney();
+        int playerMoney = RunManager.Instance.Money;
 
 
         if (hospitalBillPanel != null)
@@ -322,43 +318,10 @@ public class HospitalDialogueSystem : MonoBehaviour
         }
     }
 
-    int GetPlayerLife()
-    {
-        GameObject dataObj = GameObject.Find("KeepFightData");
-        if (dataObj != null)
-        {
-            KeepGameData data = dataObj.GetComponent<KeepGameData>();
-            return data.life;
-        }
-        return 100;
-    }
-
-    int GetPlayerMoney()
-    {
-        GameObject dataObj = GameObject.Find("KeepCoffeeData");
-        if (dataObj != null)
-        {
-            KeepGameData data = dataObj.GetComponent<KeepGameData>();
-            return data.money;
-        }
-        return 0;
-    }
-
     void OnYesClicked(int billCost)
     {
-
-        int playerMoney = GetPlayerMoney();
-
-        if (playerMoney >= billCost)
+        if (RunManager.Instance.TrySpend(billCost))
         {
-
-            GameObject dataObj = GameObject.Find("KeepCoffeeData");
-            if (dataObj != null)
-            {
-                KeepGameData data = dataObj.GetComponent<KeepGameData>();
-                data.money -= billCost;
-            }
-
             LoadScene(sceneName);
         }
         else

@@ -1,133 +1,57 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
+// Barra de stress do café. Já não termina o turno sozinha (quem manda no tempo é o CafeSceneManager);
+// no fim do turno, parte do stress passa a Fúria inicial na luta.
 public class StressBarManager : MonoBehaviour
 {
     [SerializeField] private Image StressBar;
     [SerializeField] private Animator animator;
-
     [SerializeField] private float maxStress = 100f;
     [SerializeField] public float actualStress = 0f;
 
-    [SerializeField] private string changeScene = "FightClub";
-    [SerializeField] private float gameOverTimer = 60f;
-
     private bool gameActive = false;
-    private bool gameOverScheduled = false;
+    private static readonly int StressParam = Animator.StringToHash("Stress");
 
-    private static readonly string PARAMETRO_NIVEL_STRESS = "Stress";
-
-    void OnEnable()
+    private void OnEnable()
     {
         CafeSceneManager.OnGameStarted += HandleGameStarted;
         CafeSceneManager.OnGameEnded += HandleGameEnded;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         CafeSceneManager.OnGameStarted -= HandleGameStarted;
         CafeSceneManager.OnGameEnded -= HandleGameEnded;
     }
 
-    void HandleGameStarted()
-    {
-        gameActive = true;
-        Invoke("GameOver", gameOverTimer);
-        gameOverScheduled = true;
-    }
-
-    void HandleGameEnded()
-    {
-        gameActive = false;
-        if (gameOverScheduled)
-        {
-            CancelInvoke("GameOver");
-            gameOverScheduled = false;
-        }
-    }
+    private void HandleGameStarted() => gameActive = true;
+    private void HandleGameEnded() => gameActive = false;
 
     private void Start()
     {
-        Invoke("GameOver", gameOverTimer);
-        UpdateBar();
-
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
+        if (animator == null) animator = GetComponent<Animator>();
+        Refresh();
     }
 
-    public void IncreaseStress(float quantity)
-    {
-        if (!gameActive) return;
-
-        actualStress = Mathf.Clamp(actualStress + quantity - 11, 0, maxStress);
-        UpdateBar();
-        UpdateAnimator();
-    }
-
-    public void DecreaseStress(float quantity)
-    {
-        if (!gameActive) return;
-
-        actualStress = Mathf.Clamp(actualStress - quantity, 0, maxStress);
-        UpdateBar();
-        UpdateAnimator();
-    }
+    public void IncreaseStress(float quantity) => DefineStress(actualStress + quantity);
+    public void DecreaseStress(float quantity) => DefineStress(actualStress - quantity);
 
     public void DefineStress(float value)
     {
         if (!gameActive) return;
-
         actualStress = Mathf.Clamp(value, 0, maxStress);
-        UpdateBar();
-        UpdateAnimator();
+        Refresh();
     }
 
-    private void UpdateBar()
+    private void Refresh()
     {
-        if (StressBar != null)
-        {
-            float percentage = actualStress / maxStress;
-            StressBar.fillAmount = percentage;
-        }
+        if (StressBar != null) StressBar.fillAmount = actualStress / maxStress;
+        if (animator != null) animator.SetInteger(StressParam, Mathf.RoundToInt(StressPercentage() * 100f));
+        // quanto mais stress, mais a imagem perde cor e a vignette fecha
+        PostFXDirector.SetStress01(StressPercentage());
     }
 
-    private void UpdateAnimator()
-    {
-        if (animator != null)
-        {
-            int stressInt = Mathf.RoundToInt((actualStress / maxStress) * 100f);
-            animator.SetInteger(PARAMETRO_NIVEL_STRESS, stressInt);
-        }
-    }
-
-    private void GameOver()
-    {
-        gameOverScheduled = false;
-
-        if (!string.IsNullOrEmpty(changeScene))
-        {
-            SceneManager.LoadScene(changeScene);
-        }
-    }
-
-    public float ActualStress()
-    {
-        return actualStress;
-    }
-
-    public float StressPercentage()
-    {
-        return actualStress / maxStress;
-    }
-
-    private void Update()
-    {
-        if (gameActive)
-        {
-            DefineStress(actualStress);
-        }
-    }
+    public float ActualStress() => actualStress;
+    public float StressPercentage() => actualStress / maxStress;
 }

@@ -1,55 +1,60 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
+// Dinheiro ganho neste turno. Pedidos certos seguidos dão gorjeta; um erro quebra a sequência.
 public class MoneyManager : MonoBehaviour
 {
     public int currentMoney = 0;
     [SerializeField] private TextMeshProUGUI moneyText;
-    
-    public System.Action OnCorrectOrderSound;
-    public System.Action OnIncorrectOrderSound;
-    public System.Action OnSilhouetteTimeoutSound;
+
+    public int OrdersServed { get; private set; }
+    public int Mistakes { get; private set; }
+    public int Tips { get; private set; }
+    public int Streak { get; private set; }
 
     private void Start()
     {
         UpdateMoneyUI();
     }
-    
-    public void AddMoney(int amount)
+
+    // Devolve a gorjeta ganha (0 se não houve).
+    public int RegisterCorrectOrder()
     {
-        currentMoney += amount;
+        Streak++;
+        OrdersServed++;
+        int tip = Streak >= 2 ? Mathf.Min(5 * (Streak - 1), 15) : 0;
+        Tips += tip;
+        currentMoney += RunManager.OrderReward + tip;
         UpdateMoneyUI();
-        if (amount > 0) OnCorrectOrderSound?.Invoke();
+        if (RunManager.Instance.IsCozy) RunManager.Instance.RecordCozyMoney(currentMoney);
+        return tip;
     }
-    
+
+    public void RegisterWrongOrder()
+    {
+        Streak = 0;
+        Mistakes++;
+        SubtractMoney(RunManager.Instance.WrongOrderCost);
+    }
+
+    public void RegisterTimeout()
+    {
+        Streak = 0;
+        Mistakes++;
+        SubtractMoney(RunManager.Instance.TimeoutCost);
+    }
+
     public void SubtractMoney(int amount)
     {
-        currentMoney -= amount;
-        if (currentMoney < 0) currentMoney = 0;
-
+        currentMoney = Mathf.Max(0, currentMoney - amount);
         UpdateMoneyUI();
-        if (amount > 0) OnIncorrectOrderSound?.Invoke();
     }
-    
+
     private void UpdateMoneyUI()
     {
-        if (moneyText != null)
-        {
-            moneyText.text = $"${currentMoney}";
-        }
+        if (moneyText == null) return;
+        moneyText.text = Streak >= 2 ? $"${currentMoney}  x{Streak}" : $"${currentMoney}";
     }
 
-    public int GetCurrentMoney()
-    {
-        return currentMoney;
-    }
-    public void SaveMoneyToKeepData()
-    {
-        GameObject dataObj = GameObject.Find("KeepCoffeeData");
-        if (dataObj != null)
-        {
-            KeepGameData data = dataObj.GetComponent<KeepGameData>();
-            data.money = currentMoney;
-        }
-    }
+    public int GetCurrentMoney() => currentMoney;
 }

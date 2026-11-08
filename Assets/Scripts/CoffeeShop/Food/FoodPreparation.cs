@@ -9,7 +9,6 @@ public class FoodPreparation : MonoBehaviour
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private GameObject coffeeProgressIndicator;
     [SerializeField] private GameObject toastProgressIndicator;
-    [SerializeField] private bool showDebug = true;
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private CoffeeMachineShake coffeeMachineShake;
@@ -115,6 +114,7 @@ public class FoodPreparation : MonoBehaviour
         {
             playerInventory = FindFirstObjectByType<PlayerInventory>();
         }
+        timeToGetCold = RunManager.Instance.FoodColdTime;
         if (stressManager == null)
         {
             stressManager = FindFirstObjectByType<StressBarManager>();
@@ -152,7 +152,7 @@ public class FoodPreparation : MonoBehaviour
     {
         if (!gameActive) return;
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (GameInput.Player.Interact.WasPressedThisFrame())
         {
             if (playerInCoffeeArea)
             {
@@ -219,7 +219,11 @@ public class FoodPreparation : MonoBehaviour
         {
             marioAnimator.SetBool(EntregandoParam, true);
 
-            AnimatorStateInfo stateInfo = marioAnimator.GetCurrentAnimatorStateInfo(0);
+            // espera um frame para o Animator já estar na animação nova antes de ler a duração
+            yield return null;
+            AnimatorStateInfo stateInfo = marioAnimator.IsInTransition(0)
+                ? marioAnimator.GetNextAnimatorStateInfo(0)
+                : marioAnimator.GetCurrentAnimatorStateInfo(0);
             float animationLength = stateInfo.length;
 
             yield return new WaitForSeconds(animationLength);
@@ -263,9 +267,6 @@ public class FoodPreparation : MonoBehaviour
                 toastSnowflake.SetActive(true);
             if (toastAreaSnowflake != null)
                 toastAreaSnowflake.SetActive(true);
-
-            if (showDebug)
-                Debug.Log("Tosta ficou gelada!");
         }
     }
 

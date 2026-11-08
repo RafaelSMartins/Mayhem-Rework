@@ -1,8 +1,9 @@
-using UnityEngine;
-using TMPro;
 using System;
 using System.Collections;
+using TMPro;
+using UnityEngine;
 
+// Um cliente sentado. Entregar = tecla de interagir (J / Enter / Espaço / X·A) ao pé dele com comida na mão.
 public class SilhouetteOrder : MonoBehaviour
 {
     [SerializeField] private GameObject orderBubble;
@@ -12,230 +13,122 @@ public class SilhouetteOrder : MonoBehaviour
     [SerializeField] private Sprite coffeeSprite;
     [SerializeField] private Sprite bothSprite;
     [SerializeField] private float fadeDuration = 1.5f;
-
-    private float duration;
-    private Action onDestroy;
     [SerializeField] private OrderType currentOrder;
+
+    private const float CorrectStressRelief = 10f;
+    private const float WrongStress = 15f;
+
+    private Action<bool> onLeave;
     private bool orderFulfilled = false;
     private bool isDestroying = false;
-    
     private Collider2D myCollider;
-    
+    private SpriteRenderer sr;
     private StressBarManager stressManager;
+    private PlayerInventory inventory;
     private OrderDisplay orderDisplay;
     private int seatIndex = -1;
 
-    public enum OrderType
-    {
-        Toast,
-        Coffee,
-        Both
-    }
+    public enum OrderType { Toast, Coffee, Both }
 
     private void Awake()
     {
         myCollider = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
         stressManager = FindFirstObjectByType<StressBarManager>();
+        inventory = FindFirstObjectByType<PlayerInventory>();
     }
 
-    public void SetSeatIndex(int index)
-    {
-        seatIndex = index;
-    }
+    public void SetSeatIndex(int index) => seatIndex = index;
+    public void SetOrderDisplay(OrderDisplay display) => orderDisplay = display;
 
-    public void SetOrderDisplay(OrderDisplay display)
+    // onLeave(true) = foi servido; onLeave(false) = desistiu de esperar.
+    public void Initialize(float duration, Action<bool> onLeave)
     {
-        orderDisplay = display;
-    }
-
-    public void Initialize(float duration, Action onDestroy)
-    {
-        this.duration = duration;
-        this.onDestroy = onDestroy;
-        
-        GenerateRandomOrder();
+        this.onLeave = onLeave;
+        currentOrder = (OrderType)UnityEngine.Random.Range(0, 3);
         ShowOrder();
-        
-        if (orderDisplay != null && seatIndex >= 0)
-        {
-            orderDisplay.ShowOrder(seatIndex, currentOrder);
-        }
-        
-        StartCoroutine(FadeInOutSequence(duration));
-    }
-
-    private void GenerateRandomOrder()
-    {
-        int randomOrder = UnityEngine.Random.Range(0, 3);
-        currentOrder = (OrderType)randomOrder;
+        if (orderDisplay != null && seatIndex >= 0) orderDisplay.ShowOrder(seatIndex, currentOrder);
+        StartCoroutine(WaitSequence(duration));
     }
 
     private void ShowOrder()
     {
-        if (orderBubble != null)
-            orderBubble.SetActive(true);
-        
+        if (orderBubble != null) orderBubble.SetActive(true);
+        Sprite icon = currentOrder == OrderType.Toast ? toastSprite : currentOrder == OrderType.Coffee ? coffeeSprite : bothSprite;
+        if (orderIcon != null && icon != null) orderIcon.sprite = icon;
         if (orderText != null)
-        {
-            switch (currentOrder)
-            {
-                case OrderType.Toast:
-                    orderText.text = "Tosta";
-                    if (orderIcon != null && toastSprite != null)
-                        orderIcon.sprite = toastSprite;
-                    break;
-                case OrderType.Coffee:
-                    orderText.text = "Café";
-                    if (orderIcon != null && coffeeSprite != null)
-                        orderIcon.sprite = coffeeSprite;
-                    break;
-                case OrderType.Both:
-                    orderText.text = "Tosta & Café";
-                    if (orderIcon != null && bothSprite != null)
-                        orderIcon.sprite = bothSprite;
-                    break;
-            }
-        }
+            orderText.text = currentOrder == OrderType.Toast ? "Tosta" : currentOrder == OrderType.Coffee ? "Café" : "Tosta & Café";
     }
 
     private void Update()
     {
-        if (!isDestroying && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
-        {
-            CheckPlayerDelivery();
-        }
+        if (!isDestroying && GameInput.Player.Interact.WasPressedThisFrame()) TryDeliver();
     }
 
-    private void CheckPlayerDelivery()
+    private void TryDeliver()
     {
-        if (orderFulfilled)
-            return;
-        
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(myCollider.bounds.center, myCollider.bounds.size, 0);
-        bool playerInside = false;
-        
-        foreach (Collider2D col in colliders)
-        {
-            if (col.CompareTag("Player"))
-            {
-                playerInside = true;
-                break;
-            }
-        }
-        
-        if (playerInside)
-        {
-            PlayerInventory inventory = FindFirstObjectByType<PlayerInventory>();
-            bool isCorrect = false;
-            
-            if (inventory != null)
-            {
-                isCorrect = inventory.CheckAndDeliverOrder(currentOrder);
-            }
-            
-            if (stressManager != null)
-            {
-                if (isCorrect)
-                {
-                    stressManager.DecreaseStress(15f);
-                }
-                else
-                {
-                    stressManager.IncreaseStress(20f);
-                }
-            }
-            
-            orderFulfilled = true;
-            
-            // Esconde o pedido do UI quando é entregue
-            if (orderDisplay != null && seatIndex >= 0)
-            {
-                orderDisplay.HideOrder(seatIndex);
-            }
-            
-            StartDestroySequence();
-        }
-    }
+        if (orderFulfilled || inventory == null || !inventory.HasAnyItem() || !PlayerIsInside()) return;
 
-    private void StartDestroySequence()
-    {
-        if (isDestroying) return;
-        
+        bool correct = inventory.CheckAndDeliverOrder(currentOrder);
+        if (stressManager != null)
+        {
+            if (correct) stressManager.DecreaseStress(CorrectStressRelief);
+            else stressManager.IncreaseStress(WrongStress);
+        }
+
+        orderFulfilled = true;
+        if (orderDisplay != null && seatIndex >= 0) orderDisplay.HideOrder(seatIndex);
         isDestroying = true;
         StopAllCoroutines();
-        StartCoroutine(FeedbackAndFadeOut());
-    }
-    
-    private IEnumerator FeedbackAndFadeOut()
-    {
-        yield return new WaitForSeconds(1.5f);
-        yield return Fade(1, 0, fadeDuration);
-        
-        DestroyAndCleanup();
+        StartCoroutine(LeaveSequence(0.6f));
     }
 
-    private IEnumerator FadeInOutSequence(float visibleTime)
+    private bool PlayerIsInside()
     {
-        yield return Fade(0, 1, fadeDuration);
-        
-        float timeRemaining = visibleTime - fadeDuration;
-        
-        while (timeRemaining > 0 && !isDestroying)
+        foreach (Collider2D col in Physics2D.OverlapBoxAll(myCollider.bounds.center, myCollider.bounds.size, 0))
+            if (col.CompareTag("Player")) return true;
+        return false;
+    }
+
+    private IEnumerator WaitSequence(float visibleTime)
+    {
+        yield return Fade(0, 1);
+        float remaining = visibleTime - fadeDuration;
+        while (remaining > 0 && !isDestroying)
         {
+            // o cliente fica impaciente: pisca quando está quase a ir-se embora
+            if (sr != null && remaining < 4f) sr.color = new Color(1f, 1f, 1f, Mathf.Repeat(Time.time * 3f, 1f) > 0.3f ? 1f : 0.4f);
+            remaining -= Time.deltaTime;
             yield return null;
-            timeRemaining -= Time.deltaTime;
         }
-        
-        if (!isDestroying)
-        {
-            isDestroying = true;
-            
-            if (orderDisplay != null && seatIndex >= 0)
-            {
-                orderDisplay.HideOrder(seatIndex);
-            }
-            
-            yield return Fade(1, 0, fadeDuration);
-            
-            DestroyAndCleanup();
-        }
+        if (sr != null) sr.color = Color.white;
+        isDestroying = true;
+        if (orderDisplay != null && seatIndex >= 0) orderDisplay.HideOrder(seatIndex);
+        yield return LeaveSequence(0f);
     }
 
-    private void DestroyAndCleanup()
+    private IEnumerator LeaveSequence(float delay)
     {
-        if (onDestroy != null)
-            onDestroy();
-            
+        yield return new WaitForSeconds(delay);
+        yield return Fade(1, 0);
+        onLeave?.Invoke(orderFulfilled);
         Destroy(gameObject);
-        stressManager.IncreaseStress(20f);
     }
 
-    private IEnumerator Fade(float from, float to, float duration)
+    private IEnumerator Fade(float from, float to)
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr == null) yield break;
-
         float elapsed = 0;
         Color color = sr.color;
-
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
-            float alpha = Mathf.Lerp(from, to, elapsed / duration);
-            sr.color = new Color(color.r, color.g, color.b, alpha);
+            sr.color = new Color(color.r, color.g, color.b, Mathf.Lerp(from, to, elapsed / fadeDuration));
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         sr.color = new Color(color.r, color.g, color.b, to);
     }
 
-    public bool IsOrderFulfilled()
-    {
-        return orderFulfilled;
-    }
-    
-    public OrderType GetCurrentOrder()
-    {
-        return currentOrder;
-    }
+    public bool IsOrderFulfilled() => orderFulfilled;
+    public OrderType GetCurrentOrder() => currentOrder;
 }

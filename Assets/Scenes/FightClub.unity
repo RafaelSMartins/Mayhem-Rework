@@ -1239,7 +1239,7 @@ MonoBehaviour:
   priority: 1
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 142fa0d94a81ed04984222907daa90ba, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 6f5ad04e59d9f4d4eb2c4d9ed356a0f3, type: 2}
 --- !u!4 &378825982
 Transform:
   m_ObjectHideFlags: 0
@@ -1307,8 +1307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03080168052f6b7408051960667dca92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChaseMode: 0
-  Attacking: 0
   rb: {fileID: 404401022}
   speed: 5
   spr: {fileID: 404401017}
@@ -2257,7 +2255,6 @@ GameObject:
   m_Component:
   - component: {fileID: 728569067}
   - component: {fileID: 728569070}
-  - component: {fileID: 728569069}
   - component: {fileID: 728569068}
   m_Layer: 0
   m_Name: EnemyCheck
@@ -2308,20 +2305,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &728569069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728569066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4aaa09906f0a8041992d38c6b016259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 404401018}
-  minDistance: 2
 --- !u!61 &728569070
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2457,8 +2440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03080168052f6b7408051960667dca92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChaseMode: 0
-  Attacking: 0
   rb: {fileID: 848772776}
   speed: 5
   spr: {fileID: 848772771}
@@ -2804,7 +2785,6 @@ GameObject:
   m_Component:
   - component: {fileID: 903395873}
   - component: {fileID: 903395876}
-  - component: {fileID: 903395875}
   - component: {fileID: 903395874}
   m_Layer: 0
   m_Name: EnemyCheck
@@ -2855,20 +2835,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &903395875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 903395872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4aaa09906f0a8041992d38c6b016259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 925070196}
-  minDistance: 2
 --- !u!61 &903395876
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2967,8 +2933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03080168052f6b7408051960667dca92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChaseMode: 0
-  Attacking: 0
   rb: {fileID: 925070200}
   speed: 5
   spr: {fileID: 925070195}
@@ -3403,7 +3367,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -3
   m_Sprite: {fileID: -9187704837372147980, guid: e292a945bb6123d43bb2128a6dec3d74, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.77, g: 0.79, b: 0.73, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -3615,7 +3579,6 @@ MonoBehaviour:
   nextSceneName: Video
   useSceneIndex: 0
   nextSceneIndex: 0
-  skipKey: 107
 --- !u!4 &980404475
 Transform:
   m_ObjectHideFlags: 0
@@ -4461,6 +4424,63 @@ Transform:
   - {fileID: 1486487411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1385606551
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736507732992356463, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773637733789430540, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
+      propertyPath: m_Name
+      value: BasementLighting
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a41a660fdcc3f8546bf7d754f2a24770, type: 3}
 --- !u!1 &1385837340
 GameObject:
   m_ObjectHideFlags: 0
@@ -5314,7 +5334,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1747870137}
   - component: {fileID: 1747870140}
-  - component: {fileID: 1747870139}
   - component: {fileID: 1747870138}
   m_Layer: 0
   m_Name: EnemyCheck
@@ -5365,20 +5384,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1747870139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747870136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4aaa09906f0a8041992d38c6b016259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 848772772}
-  minDistance: 2
 --- !u!61 &1747870140
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5435,7 +5440,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1775982317}
   - component: {fileID: 1775982320}
-  - component: {fileID: 1775982319}
   - component: {fileID: 1775982318}
   m_Layer: 0
   m_Name: EnemyCheck
@@ -5486,20 +5490,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1775982319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775982316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4aaa09906f0a8041992d38c6b016259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 1936206973}
-  minDistance: 2
 --- !u!61 &1775982320
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6238,8 +6228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03080168052f6b7408051960667dca92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChaseMode: 0
-  Attacking: 0
   rb: {fileID: 1936206977}
   speed: 5
   spr: {fileID: 1936206972}
@@ -6667,6 +6655,18 @@ PrefabInstance:
       value: 122.718
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 77728203a947b74459d3ac336a0645a6, type: 3}
+      propertyPath: m_Color.b
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 77728203a947b74459d3ac336a0645a6, type: 3}
+      propertyPath: m_Color.g
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 77728203a947b74459d3ac336a0645a6, type: 3}
+      propertyPath: m_Color.r
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 77728203a947b74459d3ac336a0645a6, type: 3}
       propertyPath: m_DrawMode
       value: 2
       objectReference: {fileID: 0}
@@ -6845,3 +6845,4 @@ SceneRoots:
   - {fileID: 980404475}
   - {fileID: 2082523351}
   - {fileID: 1103450415}
+  - {fileID: 1385606551}

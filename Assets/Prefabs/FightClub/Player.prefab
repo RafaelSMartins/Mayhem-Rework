@@ -260,7 +260,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -302,16 +302,17 @@ MonoBehaviour:
   rb: {fileID: 8690889777290279667}
   anim: {fileID: 2099815233755063853}
   AttackArea: {fileID: 6842362938793615295}
-  damage: 0
+  life: 100
   popUpPrefab: {fileID: 6941848737422444607, guid: a7f457cf8cd385e40bad4695384d8f13, type: 3}
   lifebar: {fileID: 0}
   particles: {fileID: 708440199679308887, guid: 95a9a960c6b660441b724f8be8601d74, type: 3}
-  Uppercut: 0
   radioSource: {fileID: 2566855579189004828}
   hurtSound: {fileID: 2136129848389548701}
   cadaver: {fileID: 5762391859521674724, guid: 622003f5de33bd244b90aee29f2d2d28, type: 3}
   speed: 12
-  jump_force: 7
+  parryWindow: 0.18
+  blockChip: 0.2
+  invulnerableAfterHit: 0.45
 --- !u!82 &2566855579189004828
 AudioSource:
   m_ObjectHideFlags: 0

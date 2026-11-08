@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.InputSystem;
 
+// O que o William tem nas mãos no café. Q/E (LT/RT) larga a tosta/café.
 public class PlayerInventory : MonoBehaviour
 {
     [SerializeField] private bool hasCoffee = false;
@@ -17,217 +15,71 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] audios;
-    [SerializeField] private StressBarManager stressManager;
-    public InputAction leftTrigger;
-    public InputAction rightTrigger;
 
-    void OnEnable()
+    private void Start()
     {
-        leftTrigger.Enable();
-        rightTrigger.Enable();
+        UpdateUI();
+        if (moneyManager == null) moneyManager = FindFirstObjectByType<MoneyManager>();
     }
 
-    void OnDisable()
+    private void Update()
     {
-        leftTrigger.Disable();
-        rightTrigger.Disable();
-    }
-
-    void Update()
-    {
-        if (leftTrigger.ReadValue<float>() > 0.5f)
+        if (GameInput.Player.DropToast.WasPressedThisFrame())
         {
-            if (hasToast)
-                DropToast();
-            else if (hasColdToast)
-                DropColdToast();
+            hasToast = false;
+            hasColdToast = false;
+            UpdateUI();
         }
-
-        if (rightTrigger.ReadValue<float>() > 0.5f)
+        if (GameInput.Player.DropCoffee.WasPressedThisFrame())
         {
-            if (hasCoffee)
-                DropCoffee();
-            else if (hasColdCoffee)
-                DropColdCoffee();
+            hasCoffee = false;
+            hasColdCoffee = false;
+            UpdateUI();
         }
     }
 
-    void Start()
-    {
-        UpdateUI();
+    public bool HasCoffee() => hasCoffee;
+    public bool HasToast() => hasToast;
+    public bool HasColdCoffee() => hasColdCoffee;
+    public bool HasColdToast() => hasColdToast;
+    public bool HasAnyItem() => hasCoffee || hasToast || hasColdCoffee || hasColdToast;
 
-        if (moneyManager == null)
-        {
-            moneyManager = FindFirstObjectByType<MoneyManager>();
-        }
-        if (stressManager == null)
-        {
-            stressManager = FindFirstObjectByType<StressBarManager>();
-        }
+    public void ToggleCoffee(bool value) { hasCoffee = value; UpdateUI(); }
+    public void ToggleToast(bool value) { hasToast = value; UpdateUI(); }
+    public void ToggleColdCoffee(bool value) { hasColdCoffee = value; UpdateUI(); }
+    public void ToggleColdToast(bool value) { hasColdToast = value; UpdateUI(); }
+
+    private void UpdateUI()
+    {
+        if (coffeeIndicator != null) coffeeIndicator.SetActive(hasCoffee);
+        if (toastIndicator != null) toastIndicator.SetActive(hasToast);
+        if (coldCoffeeIndicator != null) coldCoffeeIndicator.SetActive(hasColdCoffee);
+        if (coldToastIndicator != null) coldToastIndicator.SetActive(hasColdToast);
     }
 
-    public bool HasCoffee()
-    {
-        return hasCoffee;
-    }
-
-    public bool HasToast()
-    {
-        return hasToast;
-    }
-
-    public bool HasColdCoffee()
-    {
-        return hasColdCoffee;
-    }
-
-    public bool HasColdToast()
-    {
-        return hasColdToast;
-    }
-
-    public void ToggleCoffee(bool value)
-    {
-        hasCoffee = value;
-        UpdateUI();
-    }
-
-    public void ToggleToast(bool value)
-    {
-        hasToast = value;
-        UpdateUI();
-    }
-
-    public void ToggleColdCoffee(bool value)
-    {
-        hasColdCoffee = value;
-        UpdateUI();
-    }
-
-    public void ToggleColdToast(bool value)
-    {
-        hasColdToast = value;
-        UpdateUI();
-    }
-
-    void UpdateUI()
-    {
-        if (coffeeIndicator != null)
-            coffeeIndicator.SetActive(hasCoffee);
-
-        if (toastIndicator != null)
-            toastIndicator.SetActive(hasToast);
-
-        if (coldCoffeeIndicator != null)
-            coldCoffeeIndicator.SetActive(hasColdCoffee);
-
-        if (coldToastIndicator != null)
-            coldToastIndicator.SetActive(hasColdToast);
-    }
-
-    private void DropToast()
-    {
-        hasToast = false;
-        UpdateUI();
-    }
-
-    private void DropCoffee()
-    {
-        hasCoffee = false;
-        UpdateUI();
-    }
-
-    private void DropColdToast()
-    {
-        hasColdToast = false;
-        UpdateUI();
-    }
-
-    private void DropColdCoffee()
-    {
-        hasColdCoffee = false;
-        UpdateUI();
-    }
-
+    // Entrega ao cliente. Trata do dinheiro e do som; o stress é tratado pelo SilhouetteOrder (uma só vez).
     public bool CheckAndDeliverOrder(SilhouetteOrder.OrderType orderType)
     {
-        bool isCorrect = false;
-        bool hasWrongColdItems = false;
+        bool wantsCoffee = orderType != SilhouetteOrder.OrderType.Toast;
+        bool wantsToast = orderType != SilhouetteOrder.OrderType.Coffee;
 
-        switch (orderType)
-        {
-            case SilhouetteOrder.OrderType.Coffee:
-                isCorrect = hasCoffee;
-                hasWrongColdItems = hasColdCoffee;
-                break;
+        bool correct = (!wantsCoffee || hasCoffee) && (!wantsToast || hasToast);
 
-            case SilhouetteOrder.OrderType.Toast:
-                isCorrect = hasToast;
-                hasWrongColdItems = hasColdToast;
-                break;
+        // entrega sempre o que tens daquilo que foi pedido (quente ou frio)
+        if (wantsCoffee) { hasCoffee = false; hasColdCoffee = false; }
+        if (wantsToast) { hasToast = false; hasColdToast = false; }
+        UpdateUI();
 
-            case SilhouetteOrder.OrderType.Both:
-                isCorrect = hasToast && hasCoffee;
-                hasWrongColdItems = hasColdToast || hasColdCoffee;
-                break;
-        }
-
-        if (hasWrongColdItems)
-        {
-            audioSource.PlayOneShot(audios[1]);
-            moneyManager?.SubtractMoney(10);
-            if (stressManager != null)
-                stressManager.IncreaseStress(20f);
-
-            if (orderType == SilhouetteOrder.OrderType.Coffee && hasColdCoffee)
-            {
-                hasColdCoffee = false;
-            }
-            else if (orderType == SilhouetteOrder.OrderType.Toast && hasColdToast)
-            {
-                hasColdToast = false;
-            }
-            else if (orderType == SilhouetteOrder.OrderType.Both)
-            {
-                if (hasColdCoffee) hasColdCoffee = false;
-                if (hasColdToast) hasColdToast = false;
-            }
-
-            UpdateUI();
-            return false;
-        }
-
-        if (isCorrect)
+        if (correct)
         {
             audioSource.PlayOneShot(audios[0]);
-
-            switch (orderType)
-            {
-                case SilhouetteOrder.OrderType.Coffee:
-                    hasCoffee = false;
-                    break;
-
-                case SilhouetteOrder.OrderType.Toast:
-                    hasToast = false;
-                    break;
-
-                case SilhouetteOrder.OrderType.Both:
-                    hasCoffee = false;
-                    hasToast = false;
-                    break;
-            }
-
-            UpdateUI();
-            moneyManager?.AddMoney(20);
-            return true;
+            moneyManager?.RegisterCorrectOrder();
         }
         else
         {
             audioSource.PlayOneShot(audios[1]);
-            moneyManager?.SubtractMoney(10);
-            if (stressManager != null)
-                stressManager.IncreaseStress(20f);
-            return false;
+            moneyManager?.RegisterWrongOrder();
         }
+        return correct;
     }
 }

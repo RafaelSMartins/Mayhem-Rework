@@ -2,19 +2,32 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
+// Cutscene em vídeo: passa à cena seguinte quando acaba, ou quando o jogador salta (interagir / pausa).
 public class LoadingScript : MonoBehaviour
 {
-    private VideoPlayer videoPlayer;
     [SerializeField] private string sceneName = "";
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private VideoPlayer videoPlayer;
+    private bool leaving;
+
+    private void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
         videoPlayer.loopPointReached += EndReached;
     }
-    void EndReached(UnityEngine.Video.VideoPlayer vp)
+
+    private void Update()
     {
-        SceneManager.LoadScene(sceneName);
+        if (GameInput.Player.Interact.WasPressedThisFrame() || GameInput.Player.Pause.WasPressedThisFrame())
+            Leave();
     }
 
+    private void EndReached(VideoPlayer vp) => Leave();
+
+    private void Leave()
+    {
+        if (leaving) return;
+        leaving = true;
+        if (sceneName == RunManager.CafeScene || sceneName == "CoffeeShop") RunManager.Instance.StartShift();
+        else SceneManager.LoadScene(sceneName);
+    }
 }

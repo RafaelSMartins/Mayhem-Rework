@@ -178,8 +178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Yes
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
-  m_sharedMaterial: {fileID: 4099852317567786778, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -443,8 +443,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
-  m_sharedMaterial: {fileID: 4099852317567786778, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2412,7 +2412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeImage: {fileID: 710523257}
-  fadeDuration: 4
+  fadeDuration: 1.2
 --- !u!1 &791713246
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,7 +2432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &791713247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2721,8 +2721,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: No
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
-  m_sharedMaterial: {fileID: 4099852317567786778, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3357,24 +3357,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1353160481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3687fda35e0c83e4c834c26b6379f808, type: 3}
+  m_Script: {fileID: 11500000, guid: d17512f66c6f4354db9b27cd581aa288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadePanel: {fileID: 710523254}
-  hospitalBillPanel: {fileID: 791713246}
-  billText: {fileID: 1405283868}
-  yesButton: {fileID: 1508485131}
-  noButton: {fileID: 975715107}
-  baseBillCost: 80
   doctorPanel: {fileID: 995362801}
   playerPanel: {fileID: 471496175}
   doctorText: {fileID: 346793438}
   playerText: {fileID: 1896533114}
   doctorImage: {fileID: 518675274}
   playerImage: {fileID: 1914226989}
-  typewriterSpeed: 0.05
-  fadeDuration: 0.5
-  sceneName: Video3
+  typewriterSpeed: 0.03
+  startDelay: 1.2
 --- !u!1 &1357270335
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,8 +3532,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
-  m_sharedMaterial: {fileID: 4099852317567786778, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3968,54 +3961,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1319595348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1616706743
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1616706745}
-  - component: {fileID: 1616706744}
-  m_Layer: 0
-  m_Name: Cheats
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1616706744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616706743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7abe786ed2fe61546853d5095857d2c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextSceneName: CoffeeVideo2
-  useSceneIndex: 0
-  nextSceneIndex: 0
-  skipKey: 107
---- !u!4 &1616706745
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616706743}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1467.1831, y: 601.21124, z: -15.654035}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1657017850
 GameObject:
   m_ObjectHideFlags: 0
@@ -4049,7 +3994,7 @@ MonoBehaviour:
   priority: 1
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 142fa0d94a81ed04984222907daa90ba, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 00c8c491bb96910438d9a12fb635061d, type: 2}
 --- !u!4 &1657017852
 Transform:
   m_ObjectHideFlags: 0
@@ -4313,8 +4258,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
-  m_sharedMaterial: {fileID: 4099852317567786778, guid: 3f7863f8f6bb05748a792ef5f1319646, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4691,4 +4636,3 @@ SceneRoots:
   - {fileID: 2128691820}
   - {fileID: 1311616923}
   - {fileID: 1353160482}
-  - {fileID: 1616706745}

@@ -12,47 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/CoffeeVideo.unity
     guid: e0aa92590f9561f429e51a71ab9b8a9a
   - enabled: 1
-    path: Assets/Scenes/CoffeeShop.unity
-    guid: 029ee61a97dac6e40817fe1cd58046fd
+    path: Assets/Scenes/CoffeeShop2.unity
+    guid: baa4964b3ebb3b145a63d3fd633eb88d
   - enabled: 1
-    path: Assets/Scenes/FightClub.unity
-    guid: 7f13fa9f5c9e0bc4fad4ec1508e3cb9d
-  - enabled: 1
-    path: Assets/Scenes/Video.unity
-    guid: 7a8f562a70ca64048add9258eb73463a
+    path: Assets/Scenes/NightHub.unity
+    guid: 363f81dadcf5df8449073ba375b24b61
   - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 2a82ac07adf8cc248b72ecd744dcd708
   - enabled: 1
-    path: Assets/Scenes/Papers.unity
-    guid: 1b0c35566e9a8314480912d5ba2c63a9
-  - enabled: 1
     path: Assets/Scenes/Hospital.unity
     guid: 670cfd2052c48fa48aa3cb34a119ed02
-  - enabled: 1
-    path: Assets/Scenes/CoffeeVideo2.unity
-    guid: c707dcdc870594c40b2bf1bbaf18420d
-  - enabled: 1
-    path: Assets/Scenes/CoffeeShop2.unity
-    guid: baa4964b3ebb3b145a63d3fd633eb88d
-  - enabled: 1
-    path: Assets/Scenes/Video2.unity
-    guid: da1ed7a19ce85b1448bf40243a7b423d
-  - enabled: 1
-    path: Assets/Scenes/Level2.unity
-    guid: 110133bf0e9ea374ebd92bdf2ebdf439
-  - enabled: 1
-    path: Assets/Scenes/Papers2.unity
-    guid: 43d7779f0f3d6ff46a8c7b1e9cdad9ae
-  - enabled: 1
-    path: Assets/Scenes/Hospital2.unity
-    guid: a99e1fb0f7c1f7641a10ee211bf213d7
-  - enabled: 1
-    path: Assets/Scenes/CutsceneFinal.unity
-    guid: 37acfa49892b16f4983186a6499377d3
-  - enabled: 1
-    path: Assets/Scenes/Video3.unity
-    guid: f2e04dbf2326f1b41976180529e7527b
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 8700e4edbde595645a1dbbba928b7963, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 59693295dca03e34593ca8e3c5c6ee85, type: 3}

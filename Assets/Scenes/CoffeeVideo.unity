@@ -281,54 +281,6 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
---- !u!1 &299793527
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 299793529}
-  - component: {fileID: 299793528}
-  m_Layer: 0
-  m_Name: Cheats
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &299793528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299793527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7abe786ed2fe61546853d5095857d2c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextSceneName: CoffeeShop
-  useSceneIndex: 0
-  nextSceneIndex: 0
-  skipKey: 107
---- !u!4 &299793529
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299793527}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1467.1831, y: 601.21124, z: -15.654035}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &698243579
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692c834232e87db4fabb466a433e4905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: CoffeeShop
+  sceneName: CoffeeShop2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -597,4 +549,3 @@ SceneRoots:
   - {fileID: 52438859}
   - {fileID: 698243584}
   - {fileID: 991454378}
-  - {fileID: 299793529}

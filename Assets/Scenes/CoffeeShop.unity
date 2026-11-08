@@ -5570,8 +5570,6 @@ MonoBehaviour:
   animator: {fileID: 1119340791}
   maxStress: 100
   actualStress: 0
-  changeScene: FightClub
-  gameOverTimer: 60
 --- !u!114 &1119340793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6132,11 +6130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadePanel: {fileID: 1415154673}
-  totalTime: 60
   fadeDuration: 5
   silhouetteManager: {fileID: 2069994694}
   stressManager: {fileID: 1119340792}
   foodPreparation: {fileID: 1000894610}
+  moneyManager: {fileID: 0}
   backgroundMusic: {fileID: 0}
   audioSource: {fileID: 0}
 --- !u!1 &1440534894
@@ -6769,57 +6767,6 @@ MonoBehaviour:
   audios:
   - {fileID: 8300000, guid: baa8a4538ae7c4e49b9f605db2526016, type: 3}
   - {fileID: 8300000, guid: af52cd4413e587144bd82c1bca809de8, type: 3}
-  stressManager: {fileID: 1119340792}
-  leftTrigger:
-    m_Name: Left Trigger
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ac0d4912-4ff8-42dc-a64a-b2324ef48032
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 2c57b805-cec4-412c-a215-169198648dfc
-      m_Path: <Keyboard>/q
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Left Trigger
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 0c918561-1350-43b9-a391-ff90075c5e2d
-      m_Path: <Gamepad>/leftTrigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Left Trigger
-      m_Flags: 0
-    m_Flags: 0
-  rightTrigger:
-    m_Name: Right Trigger
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 7cf7de3a-2fbc-4a97-9c80-dadda74c579f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 231e4fd7-549f-4e6f-9859-41f53f7a7c22
-      m_Path: <Keyboard>/e
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Right Trigger
-      m_Flags: 0
-    - m_Name: 
-      m_Id: e75022b1-cbee-4db3-b58f-afa9eff93aed
-      m_Path: <Gamepad>/rightTrigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Right Trigger
-      m_Flags: 0
-    m_Flags: 0
 --- !u!82 &1534930510
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7973,7 +7920,6 @@ MonoBehaviour:
   nextSceneName: FightClub
   useSceneIndex: 0
   nextSceneIndex: 0
-  skipKey: 107
 --- !u!4 &1776973787
 Transform:
   m_ObjectHideFlags: 0
@@ -8740,50 +8686,6 @@ Transform:
   - {fileID: 2011189405}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1922862495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1922862497}
-  - component: {fileID: 1922862496}
-  m_Layer: 0
-  m_Name: KeepCoffeeData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1922862496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922862495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74def908029092c48a6f27bdacbf5bf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1922862497
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922862495}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 839.25696, y: -186.65529, z: -7.3689575}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2011189403
 GameObject:
   m_ObjectHideFlags: 0
@@ -9015,12 +8917,11 @@ MonoBehaviour:
   - {fileID: 1608044086}
   minStartDelay: 0.5
   maxStartDelay: 5
-  silhouetteDuration: 20
-  maxSilhouettes: 2
   minDelayAtMaxStress: 1
   maxDelayAtMaxStress: 2
   stressManager: {fileID: 1119340792}
   orderDisplay: {fileID: 1514228709}
+  moneyManager: {fileID: 0}
 --- !u!4 &2069994695
 Transform:
   m_ObjectHideFlags: 0
@@ -9766,4 +9667,3 @@ SceneRoots:
   - {fileID: 1500298806}
   - {fileID: 407691077}
   - {fileID: 1776973787}
-  - {fileID: 1922862497}

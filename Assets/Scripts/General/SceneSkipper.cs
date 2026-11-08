@@ -1,42 +1,30 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+// Atalho de desenvolvimento: F1 salta para a cena seguinte (só no editor / development build).
 public class SceneSkipper : MonoBehaviour
 {
     [SerializeField] private string nextSceneName;
     [SerializeField] private bool useSceneIndex = false;
     [SerializeField] private int nextSceneIndex = 0;
-    [SerializeField] private KeyCode skipKey = KeyCode.K;
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(skipKey))
-        {
-            SkipToNextScene();
-        }
-    }
-
-    void SkipToNextScene()
-    {
-        if (useSceneIndex)
-        {
-            if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadSceneAsync(nextSceneIndex);
-            }
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(nextSceneName))
-            {
-                SceneManager.LoadSceneAsync(nextSceneName);
-            }
-        }
+        if (!Debug.isDebugBuild) return;
+        if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame) SkipScene();
     }
 
     public void SkipScene()
     {
-        SkipToNextScene();
+        if (useSceneIndex)
+        {
+            if (nextSceneIndex < SceneManager.sceneCountInBuildSettings) SceneManager.LoadSceneAsync(nextSceneIndex);
+        }
+        else if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            SceneManager.LoadSceneAsync(nextSceneName);
+        }
     }
 
     public void SetNextScene(string sceneName)

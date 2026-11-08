@@ -1,12 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using System.Collections;
 
+// Fúria: enche com golpes certeiros, parries e K.O.s (e começa com parte do stress do café).
+// Com metade ou mais, Espaço/L1 gasta a barra numa explosão curta: mais dano, mais velocidade,
+// e os golpes partem a defesa. Não volta a encher enquanto está ativa.
 public class RageScript : MonoBehaviour
 {
-    [SerializeField]
-    private int _rage;
+    [SerializeField] private int _rage;
+    [SerializeField] private Image ragebar;
+    [SerializeField] private int activationThreshold = 50;
+    [SerializeField] private float drainPerSecond = 14f;
+
+    private const int MAXRAGE = 100;
+    private float drainAccumulator;
+
+    public bool IsActive { get; private set; }
+    public float DamageMultiplier => IsActive ? 1.5f : 1f;
+    public float SpeedMultiplier => IsActive ? 1.2f : 1f;
+    public bool CanActivate => !IsActive && _rage >= activationThreshold;
+
     public int rage
     {
         get { return _rage; }
@@ -16,68 +28,53 @@ public class RageScript : MonoBehaviour
             UpdateBar();
         }
     }
-    private const int MAXRAGE = 100;
-    [SerializeField] private Image ragebar;
-    private InputSystem_Actions inputActions;
-    private PlayerScript plr;
-    private bool draining = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        //lê os inputs
-        inputActions = new InputSystem_Actions();
-    }
-    private void OnEnable()
-    {
-        inputActions.Player.Enable();
-        inputActions.Player.Jump.Enable();
-        //verifica se o jogador clicou nas setas/joystick ou espaço/cruz
-        inputActions.Player.Jump.performed += Ragebait;
 
-    }
-    private void OnDisable()
+    private void Start()
     {
-        inputActions.Player.Enable();
-        inputActions.Player.Jump.Disable();
-        //verifica se o jogador clicou nas setas/joystick ou espaço/cruz
-        inputActions.Player.Jump.performed -= Ragebait;
-
-    }
-    void Start()
-    {
-        UpdateBar();
-        plr = FindAnyObjectByType<PlayerScript>();
+        rage = RunManager.Instance.StartingFury;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddFury(int amount)
     {
-
+        if (IsActive) return;
+        rage += amount;
     }
 
-    void UpdateBar()
+    public void TryActivate()
     {
-        float ragePercent = Mathf.Clamp01((float)rage / MAXRAGE);
-        ragebar.fillAmount = ragePercent;
+        if (!CanActivate) return;
+        IsActive = true;
+        drainAccumulator = 0f;
+        CameraFollow.Shake(0.3f, 0.3f);
+        RunManager.Instance.HitStop(0.08f);
     }
 
-    private void Ragebait(InputAction.CallbackContext context)
+    private void Update()
     {
-        if (!draining && rage >= 90) { StartCoroutine(DrainBar()); }
-    }
-
-    IEnumerator DrainBar()
-    {
-        draining = true;
-        plr.multiplier = 2;
-        while (rage > 0)
+        if (IsActive)
         {
-            rage -= 1;
-            float ragePercent = Mathf.Clamp01((float)rage / MAXRAGE);
-            ragebar.fillAmount = ragePercent;
-            yield return new WaitForSeconds(0.1f);
+            drainAccumulator += drainPerSecond * Time.deltaTime;
+            int drain = Mathf.FloorToInt(drainAccumulator);
+            if (drain > 0)
+            {
+                drainAccumulator -= drain;
+                rage -= drain;
+            }
+            if (_rage <= 0) IsActive = false;
         }
-        plr.multiplier = 1;
-        draining = false;
+        PostFXDirector.SetFury(IsActive);
+
+        if (ragebar != null)
+        {
+            // pisca quando está pronta a ser usada
+            bool pulse = IsActive || CanActivate;
+            float k = pulse ? 0.75f + 0.25f * Mathf.Sin(Time.unscaledTime * (IsActive ? 20f : 6f)) : 1f;
+            ragebar.color = new Color(1f, k, k);
+        }
+    }
+
+    private void UpdateBar()
+    {
+        if (ragebar != null) ragebar.fillAmount = Mathf.Clamp01((float)_rage / MAXRAGE);
     }
 }

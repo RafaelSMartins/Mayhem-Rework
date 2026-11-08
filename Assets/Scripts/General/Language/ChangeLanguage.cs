@@ -14,6 +14,12 @@ public class ChangeLanguage : MonoBehaviour
 
     void LoadSavedLanguage()
     {
+        // o seletor de idioma foi removido da cena (o jogo está só em inglês)
+        if (dropdown == null)
+        {
+            PlayerPrefs.SetString("Language", Languages.English.ToString());
+            return;
+        }
         if (PlayerPrefs.HasKey("Language"))
         {
             string savedLang = PlayerPrefs.GetString("Language");

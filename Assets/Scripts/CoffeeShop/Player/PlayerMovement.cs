@@ -9,10 +9,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        // mesmo input do resto do jogo (A/D, setas, stick, d-pad)
+        horizontal = GameInput.Player.Move.ReadValue<Vector2>().x;
+        if (Mathf.Abs(horizontal) < 0.2f) horizontal = 0f;
         Flip();
     }
 
